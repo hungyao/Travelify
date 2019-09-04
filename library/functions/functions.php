@@ -261,8 +261,12 @@ function travelify_alter_home( $query ){
 			$query->query_vars['category__in'] = $options[ 'front_page_category' ];
 		}
 	}
-}
 
+	// Allow showing lots of posts on category pages.
+	if( $query->is_category() ) {
+		$query->query_vars['posts_per_page'] = 100;
+	}
+}
 
 /****************************************************************************************/
 

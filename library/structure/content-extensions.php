@@ -20,7 +20,7 @@ function travelify_content() {
 	if( empty( $layout ) || is_archive() || is_search() || is_home() ) {
 		$layout = 'default';
 	}
-   if( 'default' == $layout ) {
+	if( 'default' == $layout ) {
 		$themeoption_layout = $options[ 'default_layout' ];
 
 		if( 'left-sidebar' == $themeoption_layout ) {
@@ -32,17 +32,16 @@ function travelify_content() {
 		else {
 			get_template_part( 'content','nosidebar' );
 		}
-   }
-   elseif( 'left-sidebar' == $layout ) {
-      get_template_part( 'content','leftsidebar' );
-   }
-   elseif( 'right-sidebar' == $layout ) {
-      get_template_part( 'content','rightsidebar' );
-   }
-   else {
-      get_template_part( 'content','nosidebar' );
-   }
-
+	}
+	elseif( 'left-sidebar' == $layout ) {
+		get_template_part( 'content','leftsidebar' );
+	}
+	elseif( 'right-sidebar' == $layout ) {
+		get_template_part( 'content','rightsidebar' );
+	}
+	else {
+		get_template_part( 'content','nosidebar' );
+	}
 }
 
 /****************************************************************************************/
@@ -82,6 +81,9 @@ function travelify_theloop() {
 	elseif( is_search() ) {
 		travelify_theloop_for_search();
 	}
+	elseif( is_category() ) {
+		travelify_theloop_for_category();
+	}
 	else {
 		travelify_theloop_for_archive();
 	}
@@ -107,52 +109,52 @@ function travelify_theloop_for_archive() {
 
 			<?php do_action( 'travelify_before_post_header' ); ?>
 
-  			<?php do_action( 'travelify_after_post_header' ); ?>
+			<?php do_action( 'travelify_after_post_header' ); ?>
 
-  			<?php do_action( 'travelify_before_post_content' ); ?>
+			<?php do_action( 'travelify_before_post_content' ); ?>
 
 			<?php
 			if( has_post_thumbnail() ) {
 				$image = '';
-	     		$title_attribute = apply_filters( 'the_title', get_the_title( $post->ID ) );
-	     		$image .= '<figure class="post-featured-image">';
-	  			$image .= '<a href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">';
-	  			$image .= get_the_post_thumbnail( $post->ID, 'featured', array( 'title' => esc_attr( $title_attribute ), 'alt' => esc_attr( $title_attribute ) ) ).'</a>';
-	  			$image .= '</figure>';
+				$title_attribute = apply_filters( 'the_title', get_the_title( $post->ID ) );
+				$image .= '<figure class="post-featured-image">';
+				$image .= '<a href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">';
+				$image .= get_the_post_thumbnail( $post->ID, 'featured', array( 'title' => esc_attr( $title_attribute ), 'alt' => esc_attr( $title_attribute ) ) ).'</a>';
+				$image .= '</figure>';
 
-	  			echo $image;
-	  		}
-  			?>
+				echo $image;
+			}
+			?>
 			<header class="entry-header">
-    			<h2 class="entry-title">
-    				<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
-    			</h2><!-- .entry-title -->
-  			</header>
+				<h2 class="entry-title">
+					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
+				</h2><!-- .entry-title -->
+			</header>
 
-  			<div class="entry-content clearfix">
-    			<?php the_excerpt(); ?>
-  			</div>
+			<div class="entry-content clearfix">
+				<?php the_excerpt(); ?>
+			</div>
 
-  			<?php do_action( 'travelify_after_post_content' ); ?>
+			<?php do_action( 'travelify_after_post_content' ); ?>
 
-  			<?php do_action( 'travelify_before_post_meta' ); ?>
+			<?php do_action( 'travelify_before_post_meta' ); ?>
 
-  			<div class="entry-meta-bar clearfix">
-    			<div class="entry-meta">
-	    				<?php travelify_posted_on(); ?>
-	    				<?php if( has_category() ) { ?>
-	             		<span class="category"><?php the_category(', '); ?></span>
-	             	<?php } ?>
-	    				<?php if ( comments_open() ) { ?>
-	             		<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
-	             	<?php } ?>
-    			</div><!-- .entry-meta -->
-    			<?php
-    			echo '<a class="readmore" href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">'.__( 'Read more', 'travelify' ).'</a>';
-    			?>
-    		</div>
+			<div class="entry-meta-bar clearfix">
+				<div class="entry-meta">
+						<?php travelify_posted_on(); ?>
+						<?php if( has_category() ) { ?>
+						<span class="category"><?php the_category(', '); ?></span>
+					<?php } ?>
+						<?php if ( comments_open() ) { ?>
+						<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
+					<?php } ?>
+				</div><!-- .entry-meta -->
+				<?php
+				echo '<a class="readmore" href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">'.__( 'Read more', 'travelify' ).'</a>';
+				?>
+			</div>
 
-    		<?php do_action( 'travelify_after_post_meta' ); ?>
+			<?php do_action( 'travelify_after_post_meta' ); ?>
 
 		</article>
 	</section>
@@ -164,8 +166,69 @@ function travelify_theloop_for_archive() {
 	else {
 		?>
 		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
-      <?php
-   }
+	  <?php
+	}
+}
+endif;
+
+/****************************************************************************************/
+
+if ( ! function_exists( 'travelify_theloop_for_category' ) ) :
+/**
+ * Function to show the category loop content.
+ */
+function travelify_theloop_for_category() {
+	global $post;
+
+	if( have_posts() ) {
+		while( have_posts() ) {
+			the_post();
+
+			do_action( 'travelify_before_post' );
+?>
+	<section id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+		<article>
+
+			<?php do_action( 'travelify_before_post_header' ); ?>
+
+			<?php do_action( 'travelify_after_post_header' ); ?>
+
+			<?php do_action( 'travelify_before_post_content' ); ?>
+
+			<header class="entry-header">
+				<h2 class="entry-title">
+					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
+				</h2><!-- .entry-title -->
+			</header>
+
+			<div class="entry-content clearfix">
+				<?php the_excerpt(); ?>
+			</div>
+
+			<?php do_action( 'travelify_after_post_content' ); ?>
+
+			<?php do_action( 'travelify_before_post_meta' ); ?>
+
+			<div class="entry-meta-bar clearfix">
+				<div class="entry-meta">
+						<?php travelify_posted_on(); ?>
+				</div><!-- .entry-meta -->
+			</div>
+
+			<?php do_action( 'travelify_after_post_meta' ); ?>
+
+		</article>
+	</section>
+<?php
+			do_action( 'travelify_after_post' );
+
+		}
+	}
+	else {
+		?>
+		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
+	  <?php
+	}
 }
 endif;
 
@@ -190,40 +253,40 @@ function travelify_theloop_for_page() {
 			<?php do_action( 'travelify_before_post_header' ); ?>
 
 			<header class="entry-header">
-    			<h2 class="entry-title">
-    				<?php the_title(); ?>
-    			</h2><!-- .entry-title -->
-  			</header>
+				<h2 class="entry-title">
+					<?php the_title(); ?>
+				</h2><!-- .entry-title -->
+			</header>
 
-  			<?php do_action( 'travelify_after_post_header' ); ?>
+			<?php do_action( 'travelify_after_post_header' ); ?>
 
-  			<?php do_action( 'travelify_before_post_content' ); ?>
+			<?php do_action( 'travelify_before_post_content' ); ?>
 
-  			<div class="entry-content clearfix">
-    			<?php the_content(); ?>
-    			<?php
-    				wp_link_pages( array(
+			<div class="entry-content clearfix">
+				<?php the_content(); ?>
+				<?php
+					wp_link_pages( array(
 						'before'            => '<div style="clear: both;"></div><div class="pagination clearfix">'.__( 'Pages:', 'travelify' ),
 						'after'             => '</div>',
 						'link_before'       => '<span>',
 						'link_after'        => '</span>',
 						'pagelink'          => '%',
 						'echo'              => 1
-               ) );
-    			?>
-  			</div>
+			   ) );
+				?>
+			</div>
 
-  			<?php
+			<?php
 
-  			do_action( 'travelify_after_post_content' );
+			do_action( 'travelify_after_post_content' );
 
-  			do_action( 'travelify_before_comments_template' );
+			do_action( 'travelify_before_comments_template' );
 
-         comments_template();
+		 comments_template();
 
-         do_action ( 'travelify_after_comments_template' );
+		 do_action ( 'travelify_after_comments_template' );
 
-         ?>
+		 ?>
 
 		</article>
 	</section>
@@ -235,7 +298,7 @@ function travelify_theloop_for_page() {
 	else {
 		?>
 		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
-      <?php
+		<?php
    }
 }
 endif;
@@ -261,34 +324,34 @@ function travelify_theloop_for_single() {
 			<?php do_action( 'travelify_before_post_header' ); ?>
 
 			<header class="entry-header">
-    			<h2 class="entry-title">
-    				<?php the_title(); ?>
-    			</h2><!-- .entry-title -->
-  		</header>
+				<h2 class="entry-title">
+					<?php the_title(); ?>
+				</h2><!-- .entry-title -->
+		</header>
 
-  		<?php do_action( 'travelify_after_post_header' ); ?>
+		<?php do_action( 'travelify_after_post_header' ); ?>
 
-  		<?php do_action( 'travelify_before_post_meta' ); ?>
+		<?php do_action( 'travelify_before_post_meta' ); ?>
 
-  			<div class="entry-meta-bar clearfix">
-    			<div class="entry-meta">
-	    				<?php travelify_posted_on(); ?>
-	    				<?php if( has_category() ) { ?>
-	             		<span class="category"><?php the_category(', '); ?></span>
-	             	<?php } ?>
-	    				<?php if ( comments_open() ) { ?>
-	             		<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
-	             	<?php } ?>
-    			</div><!-- .entry-meta -->
-    		</div>
+			<div class="entry-meta-bar clearfix">
+				<div class="entry-meta">
+						<?php travelify_posted_on(); ?>
+						<?php if( has_category() ) { ?>
+						<span class="category"><?php the_category(', '); ?></span>
+					<?php } ?>
+						<?php if ( comments_open() ) { ?>
+						<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
+					<?php } ?>
+				</div><!-- .entry-meta -->
+			</div>
 
 				<?php do_action( 'travelify_after_post_meta' ); ?>
 
 				<?php do_action( 'travelify_before_post_content' ); ?>
 
-  			<div class="entry-content clearfix">
-    			<?php the_content();
-    			if( is_single() ) {
+			<div class="entry-content clearfix">
+				<?php the_content();
+				if( is_single() ) {
 						$tag_list = get_the_tag_list( '', __( ', ', 'travelify' ) );
 
 						if( !empty( $tag_list ) ) {
@@ -300,28 +363,28 @@ function travelify_theloop_for_single() {
 						}
 					}
 
-               wp_link_pages( array(
+			   wp_link_pages( array(
 						'before'            => '<div style="clear: both;"></div><div class="pagination clearfix">'.__( 'Pages:', 'travelify' ),
 						'after'             => '</div>',
 						'link_before'       => '<span>',
 						'link_after'        => '</span>',
 						'pagelink'          => '%',
 						'echo'              => 1
-               ) );
-               ?>
-  			</div>
+			   ) );
+			   ?>
+			</div>
 
-  			<?php
+			<?php
 
-  			do_action( 'travelify_after_post_content' );
+			do_action( 'travelify_after_post_content' );
 
-  			do_action( 'travelify_before_comments_template' );
+			do_action( 'travelify_before_comments_template' );
 
-         comments_template();
+		 comments_template();
 
-         do_action ( 'travelify_after_comments_template' );
+		 do_action ( 'travelify_after_comments_template' );
 
-         ?>
+		 ?>
 
 		</article>
 	</section>
@@ -333,7 +396,7 @@ function travelify_theloop_for_single() {
 	else {
 		?>
 		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
-      <?php
+	  <?php
    }
 }
 endif;
@@ -359,20 +422,20 @@ function travelify_theloop_for_search() {
 			<?php do_action( 'travelify_before_post_header' ); ?>
 
 			<header class="entry-header">
-    			<h2 class="entry-title">
-    				<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
-    			</h2><!-- .entry-title -->
-  		</header>
+				<h2 class="entry-title">
+					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
+				</h2><!-- .entry-title -->
+		</header>
 
-  		<?php do_action( 'travelify_after_post_header' ); ?>
+		<?php do_action( 'travelify_after_post_header' ); ?>
 
-  			<?php do_action( 'travelify_before_post_content' ); ?>
+			<?php do_action( 'travelify_before_post_content' ); ?>
 
-  			<div class="entry-content clearfix">
-    			<?php the_excerpt(); ?>
-  			</div>
+			<div class="entry-content clearfix">
+				<?php the_excerpt(); ?>
+			</div>
 
-  			<?php do_action( 'travelify_after_post_content' ); ?>
+			<?php do_action( 'travelify_after_post_content' ); ?>
 
 		</article>
 	</section>
@@ -384,7 +447,7 @@ function travelify_theloop_for_search() {
 	else {
 		?>
 		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
-      <?php
+	  <?php
    }
 }
 endif;
@@ -424,51 +487,51 @@ function travelify_theloop_for_template_blog_image_large() {
 
 			<?php do_action( 'travelify_before_post_header' ); ?>
 
-  			<?php do_action( 'travelify_after_post_header' ); ?>
+			<?php do_action( 'travelify_after_post_header' ); ?>
 
-  			<?php do_action( 'travelify_before_post_content' ); ?>
+			<?php do_action( 'travelify_before_post_content' ); ?>
 
 			<?php
 			if( has_post_thumbnail() ) {
 				$image = '';
-	     		$title_attribute = apply_filters( 'the_title', get_the_title( $post->ID ) );
-	     		$image .= '<figure class="post-featured-image">';
-	  			$image .= '<a href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">';
-	  			$image .= get_the_post_thumbnail( $post->ID, 'featured', array( 'title' => esc_attr( $title_attribute ), 'alt' => esc_attr( $title_attribute ) ) ).'</a>';
-	  			$image .= '</figure>';
+				$title_attribute = apply_filters( 'the_title', get_the_title( $post->ID ) );
+				$image .= '<figure class="post-featured-image">';
+				$image .= '<a href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">';
+				$image .= get_the_post_thumbnail( $post->ID, 'featured', array( 'title' => esc_attr( $title_attribute ), 'alt' => esc_attr( $title_attribute ) ) ).'</a>';
+				$image .= '</figure>';
 
-	  			echo $image;
-	  		}
-  			?>
-  			<header class="entry-header">
-    			<h2 class="entry-title">
-    				<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
-    			</h2><!-- .entry-title -->
-  			</header>
-  			<div class="entry-content clearfix">
-    			<?php the_excerpt(); ?>
-  			</div>
+				echo $image;
+			}
+			?>
+			<header class="entry-header">
+				<h2 class="entry-title">
+					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
+				</h2><!-- .entry-title -->
+			</header>
+			<div class="entry-content clearfix">
+				<?php the_excerpt(); ?>
+			</div>
 
-  			<?php do_action( 'travelify_after_post_content' ); ?>
+			<?php do_action( 'travelify_after_post_content' ); ?>
 
-  			<?php do_action( 'travelify_before_post_meta' ); ?>
+			<?php do_action( 'travelify_before_post_meta' ); ?>
 
-  			<div class="entry-meta-bar clearfix">
-    			<div class="entry-meta">
-	    				<?php travelify_posted_on(); ?>
-	    				<?php if( has_category() ) { ?>
-	             		<span class="category"><?php the_category(', '); ?></span>
-	             	<?php } ?>
-	    				<?php if ( comments_open() ) { ?>
-	             		<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
-	             	<?php } ?>
-    			</div><!-- .entry-meta -->
-    			<?php
-    			echo '<a class="readmore" href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">'.__( 'Read more', 'travelify' ).'</a>';
-    			?>
-    		</div>
+			<div class="entry-meta-bar clearfix">
+				<div class="entry-meta">
+						<?php travelify_posted_on(); ?>
+						<?php if( has_category() ) { ?>
+						<span class="category"><?php the_category(', '); ?></span>
+					<?php } ?>
+						<?php if ( comments_open() ) { ?>
+						<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
+					<?php } ?>
+				</div><!-- .entry-meta -->
+				<?php
+				echo '<a class="readmore" href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">'.__( 'Read more', 'travelify' ).'</a>';
+				?>
+			</div>
 
-    		<?php do_action( 'travelify_after_post_meta' ); ?>
+			<?php do_action( 'travelify_after_post_meta' ); ?>
 
 		</article>
 	</section>
@@ -493,7 +556,7 @@ function travelify_theloop_for_template_blog_image_large() {
 	else {
 		?>
 		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
-      <?php
+	  <?php
    }
    $wp_query = $temp_query;
 	wp_reset_postdata();
@@ -535,51 +598,51 @@ function travelify_theloop_for_template_blog_image_medium() {
 		<div class="medium-wrap">
 			<?php do_action( 'travelify_before_post_header' ); ?>
 			<header class="entry-header">
-    			<h2 class="entry-title">
-    				<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
-    			</h2><!-- .entry-title -->
-  			</header>
+				<h2 class="entry-title">
+					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
+				</h2><!-- .entry-title -->
+			</header>
 
-  			<?php do_action( 'travelify_after_post_header' ); ?>
+			<?php do_action( 'travelify_after_post_header' ); ?>
 
-  			<?php do_action( 'travelify_before_post_content' ); ?>
+			<?php do_action( 'travelify_before_post_content' ); ?>
 
 			<?php
 			if( has_post_thumbnail() ) {
 				$image = '';
-	     		$title_attribute = apply_filters( 'the_title', get_the_title( $post->ID ) );
-	     		$image .= '<figure class="post-featured-image">';
-	  			$image .= '<a href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">';
-	  			$image .= get_the_post_thumbnail( $post->ID, 'featured-medium', array( 'title' => esc_attr( $title_attribute ), 'alt' => esc_attr( $title_attribute ) ) ).'</a>';
-	  			$image .= '</figure>';
+				$title_attribute = apply_filters( 'the_title', get_the_title( $post->ID ) );
+				$image .= '<figure class="post-featured-image">';
+				$image .= '<a href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">';
+				$image .= get_the_post_thumbnail( $post->ID, 'featured-medium', array( 'title' => esc_attr( $title_attribute ), 'alt' => esc_attr( $title_attribute ) ) ).'</a>';
+				$image .= '</figure>';
 
-	  			echo $image;
-	  		}
-  			?>
+				echo $image;
+			}
+			?>
 
-    		<?php the_excerpt(); ?>
+			<?php the_excerpt(); ?>
 
 
-  			<?php do_action( 'travelify_after_post_content' ); ?>
+			<?php do_action( 'travelify_after_post_content' ); ?>
 
-  			<?php do_action( 'travelify_before_post_meta' ); ?>
+			<?php do_action( 'travelify_before_post_meta' ); ?>
 		</div>
-  			<div class="entry-meta-bar clearfix">
-    			<div class="entry-meta">
-	    				<?php travelify_posted_on(); ?>
-	    				<?php if( has_category() ) { ?>
-	             		<span class="category"><?php the_category(', '); ?></span>
-	             	<?php } ?>
-	    				<?php if ( comments_open() ) { ?>
-	             		<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
-	             	<?php } ?>
-    			</div><!-- .entry-meta -->
-    			<?php
-    			echo '<a class="readmore" href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">'.__( 'Read more', 'travelify' ).'</a>';
-    			?>
-    		</div>
+			<div class="entry-meta-bar clearfix">
+				<div class="entry-meta">
+						<?php travelify_posted_on(); ?>
+						<?php if( has_category() ) { ?>
+						<span class="category"><?php the_category(', '); ?></span>
+					<?php } ?>
+						<?php if ( comments_open() ) { ?>
+						<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
+					<?php } ?>
+				</div><!-- .entry-meta -->
+				<?php
+				echo '<a class="readmore" href="' . get_permalink() . '" title="'.the_title( '', '', false ).'">'.__( 'Read more', 'travelify' ).'</a>';
+				?>
+			</div>
 
-    		<?php do_action( 'travelify_after_post_meta' ); ?>
+			<?php do_action( 'travelify_after_post_meta' ); ?>
 		</article>
 	</section>
 <?php
@@ -603,7 +666,7 @@ function travelify_theloop_for_template_blog_image_medium() {
 	else {
 		?>
 		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
-      <?php
+	  <?php
    }
    $wp_query = $temp_query;
 	wp_reset_postdata();
@@ -647,49 +710,49 @@ function travelify_theloop_for_template_blog_full_content() {
 			<?php do_action( 'travelify_before_post_header' ); ?>
 
 			<header class="entry-header">
-    			<h2 class="entry-title">
-    				<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
-    			</h2><!-- .entry-title -->
-  			</header>
+				<h2 class="entry-title">
+					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>"><?php the_title(); ?></a>
+				</h2><!-- .entry-title -->
+			</header>
 
-  			<?php do_action( 'travelify_after_post_header' ); ?>
+			<?php do_action( 'travelify_after_post_header' ); ?>
 
-  			<?php do_action( 'travelify_before_post_content' ); ?>
+			<?php do_action( 'travelify_before_post_content' ); ?>
 
-  			<div class="entry-content clearfix">
-    			<?php
-    				$more = 0;       // Set (inside the loop) to display content above the more tag.
+			<div class="entry-content clearfix">
+				<?php
+					$more = 0;       // Set (inside the loop) to display content above the more tag.
 
-    				the_content( __( 'Read more', 'travelify' ) );
+					the_content( __( 'Read more', 'travelify' ) );
 
-    				wp_link_pages( array(
+					wp_link_pages( array(
 						'before'            => '<div style="clear: both;"></div><div class="pagination clearfix">'.__( 'Pages:', 'travelify' ),
 						'after'             => '</div>',
 						'link_before'       => '<span>',
 						'link_after'        => '</span>',
 						'pagelink'          => '%',
 						'echo'              => 1
-               ) );
-    			 ?>
-  			</div>
+				) );
+				 ?>
+			</div>
 
-  			<?php do_action( 'travelify_after_post_content' ); ?>
+			<?php do_action( 'travelify_after_post_content' ); ?>
 
-  			<?php do_action( 'travelify_before_post_meta' ); ?>
+			<?php do_action( 'travelify_before_post_meta' ); ?>
 
-  			<div class="entry-meta-bar clearfix">
-    			<div class="entry-meta">
-	    				<?php travelify_posted_on(); ?>
-	    				<?php if( has_category() ) { ?>
-	             		<span class="category"><?php the_category(', '); ?></span>
-	             	<?php } ?>
-	    				<?php if ( comments_open() ) { ?>
-	             		<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
-	             	<?php } ?>
-    			</div><!-- .entry-meta -->
-    		</div>
+			<div class="entry-meta-bar clearfix">
+				<div class="entry-meta">
+						<?php travelify_posted_on(); ?>
+						<?php if( has_category() ) { ?>
+						<span class="category"><?php the_category(', '); ?></span>
+					<?php } ?>
+						<?php if ( comments_open() ) { ?>
+						<span class="comments"><?php comments_popup_link( __( 'No Comments', 'travelify' ), __( '1 Comment', 'travelify' ), __( '% Comments', 'travelify' ), '', __( 'Comments Off', 'travelify' ) ); ?></span>
+					<?php } ?>
+				</div><!-- .entry-meta -->
+			</div>
 
-    		<?php do_action( 'travelify_after_post_meta' ); ?>
+			<?php do_action( 'travelify_after_post_meta' ); ?>
 
 		</article>
 	</section>
@@ -714,7 +777,7 @@ function travelify_theloop_for_template_blog_full_content() {
 	else {
 		?>
 		<h1 class="entry-title"><?php _e( 'No Posts Found.', 'travelify' ); ?></h1>
-      <?php
+	  <?php
    }
    $wp_query = $temp_query;
 	wp_reset_postdata();
